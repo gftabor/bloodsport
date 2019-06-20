@@ -1,0 +1,23 @@
+<launch>
+  <arg name="model" default="$(find bloodsport)/urdf/BB.urdf"/>
+  <arg name="rvizconfig" default="$(find bloodsport)/rviz/urdf.rviz" />
+
+  <include file="$(find bloodsport)/launch/gazebo.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+
+  <rosparam command="load"
+            file="$(find bloodsport)/config/BB.yaml"
+            ns="BB" />
+
+ <rosparam command="load"
+          file="$(find bloodsport)/config/BB2.yaml"
+          ns="BBJoint" />
+
+
+  <node name="BB_controller_spawner" pkg="controller_manager" type="spawner"
+    args="BB BBJoint
+          --shutdown-timeout 3"/>
+</launch>

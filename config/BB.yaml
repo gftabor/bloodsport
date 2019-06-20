@@ -1,0 +1,2 @@
+type: "velocity_controllers/JointVelocityController"
+joint: base_to_weapon
