@@ -1,0 +1,52 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="wheel">
+    <pose>-0.073 -0.012 -0.085 0 0 0</pose>
+    <link name="wheel_link">
+      <inertial>
+        <mass>0.411</mass>
+        <inertia>
+          <ixx>0.002018</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001811</iyy>
+          <iyz>0</iyz>
+          <izz>0.001811</izz>
+        </inertia>
+      </inertial>
+      <visual name="wheel_visual">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BSWheel.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <pose>-0.073 -0.012 -0.085 0 0 0</pose>
+      </visual>
+
+      <!-- "Fake" collision box -->
+      <collision name="wheel_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.038</radius>
+            <length>0.044</length>
+          </cylinder>
+        </geometry>
+        <pose>0 0 0 1.57 0 0</pose>
+      </collision>
+
+      <!-- "True" collision box, however makes things VERY laggy.
+           Use the optimized cylinder collision box above -->
+      <!--<collision name="wheel_collision">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BSWheel.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <pose>-0.073 -0.012 -0.085 0 0 0</pose>
+      </collision>-->
+
+    </link>
+  </model>
+</sdf>
