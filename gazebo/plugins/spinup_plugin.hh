@@ -13,6 +13,9 @@ namespace gazebo
     double wait_time_after_hit_sec;
     double upwards_force_kn;
 
+    // When to stop the simulation
+    double max_force_kn;
+
     // How many times per step before incrementing the hit force
     int num_attempts_per_hit;
 
@@ -22,6 +25,7 @@ namespace gazebo
 
     // How many kN to increment by every hit
     int increment_amount_kn;
+    double increment_amount_rad_per_sec;
   };
 
   class SpinupPlugin : public WorldPlugin
@@ -32,7 +36,7 @@ namespace gazebo
 
     void Load(physics::WorldPtr _parent, sdf::ElementPtr);
 
-    private: void ResetWorld(double, double);
+    private: void ResetWorld();
 
     private: event::ConnectionPtr updateConnection;
 
@@ -47,6 +51,8 @@ namespace gazebo
     private: SpinningTestParams params;
 
     private: unsigned long update_counter;
+    private: double wait_time_before_hit_sec;
+    private: double wait_time_after_hit_sec;
   };
 
 

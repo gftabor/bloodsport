@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <model name="drive_base">
     <link name="drive_base_link">
-      <pose>0 0 0.010 1.5708 0 0</pose>
+      <pose>0 0 0.020 1.5708 0 0</pose>
       <inertial>
         <mass>55.14</mass>
         <inertia>
@@ -35,24 +35,22 @@
     </link>
     <include>
       <uri>model://bloodsport_wheel</uri>
-      <pose>-0.21 0.20 0.035 0 3.1415 0</pose>
+      <pose>-0.21 0.20 0.045 0 3.1415 0</pose>
       <name>wheel_front_left</name>
     </include>
     <include>
       <uri>model://bloodsport_wheel</uri>
-      <!--<pose>0.135 0.28 0.045 0 0 0</pose>-->
-      <pose>0.21 0.20 0.035 0 0 0</pose>
+      <pose>0.21 0.20 0.045 0 0 0</pose>
       <name>wheel_front_right</name>
     </include>
     <include>
       <uri>model://bloodsport_wheel</uri>
-      <pose>-0.21 -0.20 0.035 0 3.1415 0</pose>
+      <pose>-0.21 -0.20 0.045 0 3.1415 0</pose>
       <name>wheel_back_left</name>
     </include>
     <include>
       <uri>model://bloodsport_wheel</uri>
-      <!--<pose>0.135 0.28 0.045 0 0 0</pose>-->
-      <pose>0.21 -0.20 0.035 0 0 0</pose>
+      <pose>0.21 -0.20 0.045 0 0 0</pose>
       <name>wheel_back_right</name>
     </include>
     <joint name="wheel_front_left_joint" type="fixed">
