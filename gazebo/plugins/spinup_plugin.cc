@@ -31,14 +31,14 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
   this->spinner_link = this->robot_model->GetChildLink("spinner::spinner_link");
 
   // TODO: this could probably be a param thing in the
-  this->params.spinner_rad_per_sec = 100;
+  this->params.spinner_rad_per_sec = 60;
   this->params.upwards_force_kn = 1000; // Default value
-  this->params.num_attempts_per_hit = 20;
+  this->params.num_attempts_per_hit = 30;
 
-  this->params.increment_amount_kn = 5000;
+  this->params.increment_amount_kn = 125;
   this->params.increment_amount_rad_per_sec = 15;
 
-  this->params.max_force_kn = 1000000;
+  this->params.max_force_kn = 50000;
 
   this->params.wait_time_before_hit_sec = 0.5;
   this->params.wait_time_after_hit_sec = 2.0;
@@ -87,7 +87,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Check to see if we're moving onto the next set of hits
-    if (this->params.hit_counter >= this->params.num_attempts_per_hit)
+    if (this->params.hit_counter >= this->params.num_attempts_per_hit && this->params.spinner_rad_per_sec < 300)
     {
       // Save data.
       // For now just print to console

@@ -20,7 +20,9 @@
         <uri>model://bloodsport_chassis</uri>
       </include>
       <include>
-        <uri>model://bloodsport_standard_bar</uri>
+        <!--<uri>model://bloodsport_standard_bar</uri>-->
+        <!--<uri>model://bloodsport_asymetrical_bar</uri>-->
+        <uri>model://bloodsport_standard_bar_with_stabilizers2</uri>
       </include>
       <joint name="weapon_shaft_joint" type="revolute">
         <axis><xyz>0 1 0</xyz></axis>
