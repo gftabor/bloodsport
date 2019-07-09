@@ -1,0 +1,37 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="spinner">
+    <link name="spinner_link">
+      <pose>0 0 0.1143 1.5708 0 0</pose>
+      <inertial>
+        <mass>31.751</mass>
+        <inertia>
+          <ixx>0.461</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.897</iyy>
+          <iyz>0</iyz>
+          <izz>2.437</izz>
+        </inertia>
+      </inertial>
+      <collision name="spinner_collision">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BSWeapon_Stablizers1.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="spinner_visual">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BSWeapon_Stablizers1.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='spinner_imu' type='imu'>
+      </sensor>
+    </link>
+  </model>
+</sdf>

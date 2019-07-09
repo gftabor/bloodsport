@@ -12,14 +12,9 @@ SpinupPlugin::~SpinupPlugin()
 {
 }
 
-void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
+void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 {
   std::cout << "Spinup plugin loaded" << std::endl;
-
-  // Listen to the update event. This event is broadcast every
-  // simulation iteration.
-  this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-      std::bind(&SpinupPlugin::OnUpdate, this));
 
   this->world = _parent;
 
@@ -30,8 +25,19 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
   this->chassis_link = this->robot_model->GetChildLink("drive_base::drive_base_link");
   this->spinner_link = this->robot_model->GetChildLink("spinner::spinner_link");
 
-  // TODO: this could probably be a param thing in the
-  this->params.spinner_rad_per_sec = 60;
+  physics::InertialPtr moi = this->spinner_link->GetInertial();
+  std::cout << "Blade MOI is : xx:" << moi->IXX() << " yy:" << moi->IYY() << " zz:" << moi->IZZ() << std::endl;
+  std::cout << " xy:" << moi->IXY() << " xz:" << moi->IXZ() << " yz:" << moi->IYZ()<< std::endl;
+
+  if (!_sdf->HasElement("spinner_rad_per_sec")) {
+    std::cout << "Missing spinner_rad_per_sec param" << std::endl;
+    return;
+  }
+  else {
+    this->params.spinner_rad_per_sec = _sdf->Get<double>("spinner_rad_per_sec");
+    std::cout << "Spinning weapon at " << this->params.spinner_rad_per_sec << " rad/sec" << std::endl;
+  }
+
   this->params.upwards_force_kn = 1000; // Default value
   this->params.num_attempts_per_hit = 30;
 
@@ -43,6 +49,10 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
   this->params.wait_time_before_hit_sec = 0.5;
   this->params.wait_time_after_hit_sec = 2.0;
 
+  // Listen to the update event. This event is broadcast every
+  // simulation iteration.
+  this->updateConnection = event::Events::ConnectWorldUpdateBegin(
+      std::bind(&SpinupPlugin::OnUpdate, this));
 
   // Kickoff first hit
   this->ResetWorld();
