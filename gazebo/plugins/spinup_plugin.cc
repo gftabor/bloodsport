@@ -97,7 +97,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Check to see if we're moving onto the next set of hits
-    if (this->params.hit_counter >= this->params.num_attempts_per_hit && this->params.spinner_rad_per_sec < 300)
+    if (this->params.hit_counter == this->params.num_attempts_per_hit)
     {
       // Save data.
       // For now just print to console
@@ -114,11 +114,11 @@ void SpinupPlugin::OnUpdate()
 
       this->params.upwards_force_kn += this->params.increment_amount_kn;
 
-      if (this->params.upwards_force_kn > this->params.max_force_kn)
-      {
-        this->params.spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
-        this->params.upwards_force_kn = 1000;
-      }
+      //if (this->params.upwards_force_kn > this->params.max_force_kn)
+      //{
+        //this->params.spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
+      //  //this->params.upwards_force_kn = 1000;
+      //}
     }
     else
     {

@@ -4,6 +4,11 @@ import os
 
 def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
     try:
+        os.mkdir('autogen_model')
+    except:
+        pass
+        
+    try:
         os.mkdir('autogen_model/bar'+str(barnum))
     except:
         pass
@@ -40,7 +45,7 @@ def program_world(worldnum):
     tree.write('autogen_model/world' + str(worldnum) + '.world')
 
 
-for i in range(0, 6):
+for i in range(0, 10):
     #program_bar(23.5, 0.056, 2.474, 2.42)
     program_bar(i, mass=35, xx=0.056, yy=2.5, zz=(2.5 - i / 5.0))
     program_world(i)
