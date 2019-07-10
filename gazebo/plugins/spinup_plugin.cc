@@ -135,11 +135,11 @@ void SpinupPlugin::OnUpdate()
 
       this->params.upwards_force_kn += this->params.increment_amount_kn;
 
-      //if (this->params.upwards_force_kn > this->params.max_force_kn)
-      //{
-        //this->params.spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
-      //  //this->params.upwards_force_kn = 1000;
-      //}
+      if (this->params.upwards_force_kn > this->params.max_force_kn)
+      {
+        this->params.spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
+        this->params.upwards_force_kn = 1000;
+      }
     }
     else
     {
