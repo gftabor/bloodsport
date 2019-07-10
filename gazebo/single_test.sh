@@ -15,4 +15,4 @@ export GAZEBO_MASTER_URI=http://localhost:`expr 11345 + $1`
 python program_stability_tests.py $1 $2 $3 $4 $5 $6 $7 $8
 
 # Kicks off gazebo simulation
-gzserver autogen_model/world$1.world --verbose
+gzserver autogen_model/world$1.world --verbose > data/test$1.txt

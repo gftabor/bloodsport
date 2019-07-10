@@ -29,6 +29,9 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   std::cout << "Blade MOI is : xx:" << moi->IXX() << " yy:" << moi->IYY() << " zz:" << moi->IZZ() << std::endl;
   std::cout << " xy:" << moi->IXY() << " xz:" << moi->IXZ() << " yz:" << moi->IYZ()<< std::endl;
 
+  std::cout << "Ratios: X/Z " << moi->IXX() / moi->IZZ() << ", Y/Z " << moi->IYY() / moi->IZZ();
+  std::cout << ", X/Y " << moi->IXX() / moi->IYY() << std::endl;
+
   // SPINNER SPEED RAD/SEC
   if (!_sdf->HasElement("spinner_rad_per_sec")) {
     std::cout << "Missing spinner_rad_per_sec param" << std::endl;
