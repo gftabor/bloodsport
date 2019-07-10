@@ -24,6 +24,6 @@ do
     echo $iyy
     echo $izz
 
-    #sh single_test.sh $id $mass $rad_per_sec $ixx $iyy $izz $min_force $max_force &
+    sh single_test.sh $id $mass $rad_per_sec $ixx $iyy $izz $min_force $max_force &
   done
 done
