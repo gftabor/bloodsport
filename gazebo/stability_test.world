@@ -3,6 +3,8 @@
   <world name="default">
     <plugin name="spinup" filename="libspinup_world.so">
       <spinner_rad_per_sec>130</spinner_rad_per_sec>
+      <spinner_min_force_netwon>1000</spinner_min_force_netwon>
+      <spinner_max_force_newton>50000</spinner_max_force_newton>
     </plugin>
 
     <include>

@@ -29,6 +29,7 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   std::cout << "Blade MOI is : xx:" << moi->IXX() << " yy:" << moi->IYY() << " zz:" << moi->IZZ() << std::endl;
   std::cout << " xy:" << moi->IXY() << " xz:" << moi->IXZ() << " yz:" << moi->IYZ()<< std::endl;
 
+  // SPINNER SPEED RAD/SEC
   if (!_sdf->HasElement("spinner_rad_per_sec")) {
     std::cout << "Missing spinner_rad_per_sec param" << std::endl;
     return;
@@ -38,13 +39,30 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     std::cout << "Spinning weapon at " << this->params.spinner_rad_per_sec << " rad/sec" << std::endl;
   }
 
-  this->params.upwards_force_kn = 1000; // Default value
+  // MIN FORCE
+  if (!_sdf->HasElement("spinner_min_force_netwon")) {
+    std::cout << "Missing spinner_min_force_netwon param" << std::endl;
+    return;
+  }
+  else {
+    this->params.upwards_force_kn = _sdf->Get<double>("spinner_min_force_netwon");
+    std::cout << "Hitting weapon with min force: " << this->params.upwards_force_kn << " newtons" << std::endl;
+  }
+
+  // MAX FORCE
+  if (!_sdf->HasElement("spinner_max_force_newton")) {
+    std::cout << "Missing spinner_max_force_newton param" << std::endl;
+    return;
+  }
+  else {
+    this->params.max_force_kn = _sdf->Get<double>("spinner_max_force_newton");
+    std::cout << "Hitting weapon with max force: " << this->params.max_force_kn << " newtons" << std::endl;
+  }
+
   this->params.num_attempts_per_hit = 30;
 
   this->params.increment_amount_kn = 125;
   this->params.increment_amount_rad_per_sec = 15;
-
-  this->params.max_force_kn = 50000;
 
   this->params.wait_time_before_hit_sec = 0.5;
   this->params.wait_time_after_hit_sec = 2.0;

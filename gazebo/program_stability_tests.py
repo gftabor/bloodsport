@@ -7,7 +7,7 @@ def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
         os.mkdir('autogen_model')
     except:
         pass
-        
+
     try:
         os.mkdir('autogen_model/bar'+str(barnum))
     except:
@@ -34,18 +34,38 @@ def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
     tree.find('name').text = 'bloodsport_bar' + str(barnum)
     tree.write('autogen_model/bar'+str(barnum)+'/model.config')
 
-def program_world(worldnum):
+def program_world(worldnum, rad_per_sec, min_force, max_force):
 
     tree = ET.parse('stability_test.world')
 
     robot_model = tree.find('world').find('model')
 
+    tree.find('world').find('plugin').find('spinner_rad_per_sec').text = str(rad_per_sec)
+    tree.find('world').find('plugin').find('spinner_min_force_netwon').text = str(min_force)
+    tree.find('world').find('plugin').find('spinner_max_force_newton').text = str(max_force)
+
     robot_model.findall('include')[1].find('uri').text = 'model://bar'+str(worldnum)
 
     tree.write('autogen_model/world' + str(worldnum) + '.world')
 
-
+'''
 for i in range(0, 10):
     #program_bar(23.5, 0.056, 2.474, 2.42)
     program_bar(i, mass=35, xx=0.056, yy=2.5, zz=(2.5 - i / 5.0))
     program_world(i)
+'''
+
+import sys
+
+id = sys.argv[1]
+mass = sys.argv[2]
+rad_per_sec = sys.argv[3]
+ixx = sys.argv[4]
+iyy = sys.argv[5]
+izz = sys.argv[6]
+min_force = sys.argv[7]
+max_force = sys.argv[8]
+
+
+program_bar(id, mass, ixx, iyy, izz)
+program_world(id, rad_per_sec, min_force, max_force)
