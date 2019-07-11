@@ -7,7 +7,7 @@ mkdir autogen_model 2> /dev/null
 # Kick off tests
 for i in `seq 0 7`
 do
-  for j in `seq 0 8`
+  for j in `seq 0 7`
   do
     id=$((i*100+j))
     mass=23.5

@@ -32,6 +32,8 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   std::cout << "Ratios: X/Z " << moi->IXX() / moi->IZZ() << ", Y/Z " << moi->IYY() / moi->IZZ();
   std::cout << ", X/Y " << moi->IXX() / moi->IYY() << std::endl;
 
+  std::cout << "Spinner mass is " << moi->Mass() << std::endl;
+
   // SPINNER SPEED RAD/SEC
   if (!_sdf->HasElement("spinner_rad_per_sec")) {
     std::cout << "Missing spinner_rad_per_sec param" << std::endl;
@@ -125,6 +127,12 @@ void SpinupPlugin::OnUpdate()
       //std::cout << "Hits with force " << this->params.upwards_force_kn;
       //std::cout << " went unstable " << this->params.unstable_counter << " out of ";
       //std::cout << this->params.num_attempts_per_hit << " times" << std::endl;
+      physics::InertialPtr moi = this->spinner_link->GetInertial();
+
+      std::cout << moi->Mass() << " ";
+      std::cout << moi->IXX() << " ";
+      std::cout << moi->IYY() << " ";
+      std::cout << moi->IZZ() << " ";
       std::cout << this->params.spinner_rad_per_sec << " ";
       std::cout << this->params.upwards_force_kn << " ";
       std::cout << this->params.unstable_counter << " ";
