@@ -34,13 +34,14 @@ def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
     tree.find('name').text = 'bloodsport_bar' + str(barnum)
     tree.write('autogen_model/bar'+str(barnum)+'/model.config')
 
-def program_world(worldnum, rad_per_sec, min_force, max_force):
+def program_world(worldnum, min_rad_per_sec, max_rad_per_sec, min_force, max_force):
 
     tree = ET.parse('stability_test.world')
 
     robot_model = tree.find('world').find('model')
 
-    tree.find('world').find('plugin').find('spinner_rad_per_sec').text = str(rad_per_sec)
+    tree.find('world').find('plugin').find('spinner_min_rad_per_sec').text = str(min_rad_per_sec)
+    tree.find('world').find('plugin').find('spinner_max_rad_per_sec').text = str(max_rad_per_sec)
     tree.find('world').find('plugin').find('spinner_min_force_netwon').text = str(min_force)
     tree.find('world').find('plugin').find('spinner_max_force_newton').text = str(max_force)
 
@@ -59,13 +60,14 @@ import sys
 
 id = sys.argv[1]
 mass = sys.argv[2]
-rad_per_sec = sys.argv[3]
-ixx = sys.argv[4]
-iyy = sys.argv[5]
-izz = sys.argv[6]
-min_force = sys.argv[7]
-max_force = sys.argv[8]
+min_rad_per_sec = sys.argv[3]
+max_rad_per_sec = sys.argv[4]
+ixx = sys.argv[5]
+iyy = sys.argv[6]
+izz = sys.argv[7]
+min_force = sys.argv[8]
+max_force = sys.argv[9]
 
 
 program_bar(id, mass, ixx, iyy, izz)
-program_world(id, rad_per_sec, min_force, max_force)
+program_world(id, min_rad_per_sec, max_rad_per_sec, min_force, max_force)

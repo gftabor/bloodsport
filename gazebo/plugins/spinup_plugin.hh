@@ -8,12 +8,13 @@ namespace gazebo
 {
   struct SpinningTestParams
   {
-    double spinner_rad_per_sec;
+    double min_rad_per_sec;
+    double max_rad_per_sec;
+
     double wait_time_before_hit_sec;
     double wait_time_after_hit_sec;
-    double upwards_force_kn;
 
-    // When to stop the simulation
+    double min_force_kn;
     double max_force_kn;
 
     // How many times per step before incrementing the hit force
@@ -36,7 +37,9 @@ namespace gazebo
 
     void Load(physics::WorldPtr _parent, sdf::ElementPtr);
 
+
     private: void ResetWorld();
+    private: void StopSimulation();
 
     private: event::ConnectionPtr updateConnection;
 
@@ -49,7 +52,9 @@ namespace gazebo
 
     // Params for the test
     private: SpinningTestParams params;
-
+    
+    private: double current_force;
+    private: double current_spinner_rad_per_sec;
     private: unsigned long update_counter;
     private: double wait_time_before_hit_sec;
     private: double wait_time_after_hit_sec;

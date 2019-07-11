@@ -10,11 +10,12 @@ do
   for j in `seq 0 7`
   do
     id=$((i*100+j))
-    mass=23.5
-    rad_per_sec=60
+    mass=27
+    min_rad_per_sec=60
+    max_rad_per_sec=210
     ixx="$(echo print 0.005+$i/20.0 | python2)"
-    iyy=2.5
-    izz="$(echo print 2.5-$j/10.0 | python2)"
+    iyy=2.9
+    izz="$(echo print 2.9-$j/10.0 | python2)"
     min_force=1000
     max_force=50000
 
@@ -24,6 +25,6 @@ do
     echo $iyy
     echo $izz
 
-    sh single_test.sh $id $mass $rad_per_sec $ixx $iyy $izz $min_force $max_force &
+    sh single_test.sh $id $mass $min_rad_per_sec $max_rad_per_sec $ixx $iyy $izz $min_force $max_force &
   done
 done

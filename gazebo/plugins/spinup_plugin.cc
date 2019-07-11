@@ -1,6 +1,10 @@
 #include "spinup_plugin.hh"
 #include <stdlib.h>
 
+#include <gazebo/transport/transport.hh>
+#include <gazebo/msgs/msgs.hh>
+#include <gazebo/gazebo_client.hh>
+
 using namespace gazebo;
 GZ_REGISTER_WORLD_PLUGIN(SpinupPlugin)
 
@@ -34,14 +38,24 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
   std::cout << "Spinner mass is " << moi->Mass() << std::endl;
 
-  // SPINNER SPEED RAD/SEC
-  if (!_sdf->HasElement("spinner_rad_per_sec")) {
-    std::cout << "Missing spinner_rad_per_sec param" << std::endl;
+  // MIN SPINNER SPEED RAD/SEC
+  if (!_sdf->HasElement("spinner_min_rad_per_sec")) {
+    std::cout << "Missing spinner_min_rad_per_sec param" << std::endl;
     return;
   }
   else {
-    this->params.spinner_rad_per_sec = _sdf->Get<double>("spinner_rad_per_sec");
-    std::cout << "Spinning weapon at " << this->params.spinner_rad_per_sec << " rad/sec" << std::endl;
+    this->params.min_rad_per_sec = _sdf->Get<double>("spinner_min_rad_per_sec");
+    std::cout << "Spinning weapon at minimum " << this->params.min_rad_per_sec << " rad/sec" << std::endl;
+  }
+
+  // MAX SPINNER SPEED RAD/SEC
+  if (!_sdf->HasElement("spinner_max_rad_per_sec")) {
+    std::cout << "Missing spinner_max_rad_per_sec param" << std::endl;
+    return;
+  }
+  else {
+    this->params.max_rad_per_sec = _sdf->Get<double>("spinner_max_rad_per_sec");
+    std::cout << "Spinning weapon at maximum " << this->params.max_rad_per_sec << " rad/sec" << std::endl;
   }
 
   // MIN FORCE
@@ -50,8 +64,8 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     return;
   }
   else {
-    this->params.upwards_force_kn = _sdf->Get<double>("spinner_min_force_netwon");
-    std::cout << "Hitting weapon with min force: " << this->params.upwards_force_kn << " newtons" << std::endl;
+    this->params.min_force_kn = _sdf->Get<double>("spinner_min_force_netwon");
+    std::cout << "Hitting weapon with min force: " << this->params.min_force_kn << " newtons" << std::endl;
   }
 
   // MAX FORCE
@@ -72,6 +86,9 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   this->params.wait_time_before_hit_sec = 0.5;
   this->params.wait_time_after_hit_sec = 2.0;
 
+  this->current_force = this->params.min_force_kn;
+  this->current_spinner_rad_per_sec = this->params.min_rad_per_sec;
+
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -86,6 +103,22 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   this->update_counter = 0;
 }
 
+void SpinupPlugin::StopSimulation()
+{
+  gazebo::transport::NodePtr node(new gazebo::transport::Node());
+  node->Init();
+
+  gazebo::transport::PublisherPtr pub = 
+    node->Advertise<gazebo::msgs::ServerControl>("/gazebo/server/control");
+
+  pub->WaitForConnection();
+
+  gazebo::msgs::ServerControl msg;
+  msg.set_stop(1);
+
+  pub->Publish(msg);
+}
+
 void SpinupPlugin::OnUpdate()
 {
   // This lets the world settle at the beginning, don't add a force until
@@ -94,7 +127,7 @@ void SpinupPlugin::OnUpdate()
   {
     //std::cout << "Hitting at " << this->params.upwards_force_kn << " kN" << std::endl;
     this->spinner_link->AddLinkForce(
-      ignition::math::Vector3d(0, this->params.upwards_force_kn, 0),
+      ignition::math::Vector3d(0, this->current_force, 0),
       ignition::math::Vector3d(0, 0, 0.5));
     this->params.hit_counter++;
   }
@@ -133,20 +166,25 @@ void SpinupPlugin::OnUpdate()
       std::cout << moi->IXX() << " ";
       std::cout << moi->IYY() << " ";
       std::cout << moi->IZZ() << " ";
-      std::cout << this->params.spinner_rad_per_sec << " ";
-      std::cout << this->params.upwards_force_kn << " ";
+      std::cout << this->current_spinner_rad_per_sec << " ";
+      std::cout << this->current_force << " ";
       std::cout << this->params.unstable_counter << " ";
       std::cout << this->params.num_attempts_per_hit << std::endl;
 
       this->params.hit_counter = 0;
       this->params.unstable_counter = 0;
 
-      this->params.upwards_force_kn += this->params.increment_amount_kn;
+      this->current_force += this->params.increment_amount_kn;
 
-      if (this->params.upwards_force_kn > this->params.max_force_kn)
+      if (this->current_force > this->params.max_force_kn)
       {
-        this->params.spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
-        this->params.upwards_force_kn = 1000;
+        this->current_spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
+        this->current_force = this->params.min_force_kn;
+
+	if (this->current_spinner_rad_per_sec > this->params.max_rad_per_sec)
+        {
+           this->StopSimulation();
+        }
       }
     }
     else
@@ -168,6 +206,6 @@ void SpinupPlugin::ResetWorld()
   this->wait_time_after_hit_sec = this->params.wait_time_after_hit_sec;
 
   this->world->Reset();
-  this->weapon_joint->SetVelocity(0, this->params.spinner_rad_per_sec);
+  this->weapon_joint->SetVelocity(0, this->current_spinner_rad_per_sec);
   this->update_counter = 0;
 }
