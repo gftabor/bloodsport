@@ -25,9 +25,11 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   this->robot_model = this->world->ModelByName("robot");
 
   this->weapon_joint = this->robot_model->GetJoint("weapon_shaft_joint");
+  this->gyroscopic_joint = this->robot_model->GetJoint("gyroscopic_spinner_joint");
 
   this->chassis_link = this->robot_model->GetChildLink("drive_base::drive_base_link");
   this->spinner_link = this->robot_model->GetChildLink("spinner::spinner_link");
+  this->gyroscopic_link = this->robot_model->GetChildLink("gyroscopic_spinner_link");
 
   physics::InertialPtr moi = this->spinner_link->GetInertial();
   std::cout << "Blade MOI is : xx:" << moi->IXX() << " yy:" << moi->IYY() << " zz:" << moi->IZZ() << std::endl;
@@ -108,7 +110,7 @@ void SpinupPlugin::StopSimulation()
   gazebo::transport::NodePtr node(new gazebo::transport::Node());
   node->Init();
 
-  gazebo::transport::PublisherPtr pub = 
+  gazebo::transport::PublisherPtr pub =
     node->Advertise<gazebo::msgs::ServerControl>("/gazebo/server/control");
 
   pub->WaitForConnection();
@@ -153,7 +155,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Check to see if we're moving onto the next set of hits
-    if (this->params.hit_counter == this->params.num_attempts_per_hit)
+    /*if (this->params.hit_counter == this->params.num_attempts_per_hit)
     {
       // Save data.
       // For now just print to console
@@ -181,7 +183,7 @@ void SpinupPlugin::OnUpdate()
         this->current_spinner_rad_per_sec += this->params.increment_amount_rad_per_sec;
         this->current_force = this->params.min_force_kn;
 
-	if (this->current_spinner_rad_per_sec > this->params.max_rad_per_sec)
+	      if (this->current_spinner_rad_per_sec > this->params.max_rad_per_sec)
         {
            this->StopSimulation();
         }
@@ -193,7 +195,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Reset the test
-    this->ResetWorld();
+    this->ResetWorld();*/
   }
 
   this->update_counter++;
@@ -207,5 +209,6 @@ void SpinupPlugin::ResetWorld()
 
   this->world->Reset();
   this->weapon_joint->SetVelocity(0, this->current_spinner_rad_per_sec);
+  this->gyroscopic_joint->SetVelocity(0, 550);
   this->update_counter = 0;
 }

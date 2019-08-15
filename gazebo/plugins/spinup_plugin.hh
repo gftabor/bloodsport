@@ -48,11 +48,13 @@ namespace gazebo
     private: physics::ModelPtr robot_model;
     private: physics::LinkPtr spinner_link;
     private: physics::LinkPtr chassis_link;
+    private: physics::LinkPtr gyroscopic_link;
     private: physics::JointPtr weapon_joint;
+    private: physics::JointPtr gyroscopic_joint;
 
     // Params for the test
     private: SpinningTestParams params;
-    
+
     private: double current_force;
     private: double current_spinner_rad_per_sec;
     private: unsigned long update_counter;
