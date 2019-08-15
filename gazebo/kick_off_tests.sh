@@ -11,7 +11,7 @@ do
   do
     id=$((i*100+j))
     mass=23
-    min_rad_per_sec=10
+    min_rad_per_sec=1
     max_rad_per_sec=180
     ixx="$(echo print 0.005+$i/20.0 | python2)"
     iyy=2.9

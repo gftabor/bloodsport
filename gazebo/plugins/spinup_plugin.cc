@@ -155,7 +155,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Check to see if we're moving onto the next set of hits
-    /*if (this->params.hit_counter == this->params.num_attempts_per_hit)
+    if (this->params.hit_counter == this->params.num_attempts_per_hit)
     {
       // Save data.
       // For now just print to console
@@ -195,7 +195,7 @@ void SpinupPlugin::OnUpdate()
     }
 
     // Reset the test
-    this->ResetWorld();*/
+    this->ResetWorld();
   }
 
   this->update_counter++;
