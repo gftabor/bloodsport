@@ -5,17 +5,18 @@ mkdir data 2> /dev/null
 mkdir autogen_model 2> /dev/null
 
 # Kick off tests
-for i in `seq 0 7`
-do
-  for j in `seq 0 7`
+#for i in `seq 0 0`
+#do
+  for j in `seq 0 0`
   do
-    id=$((i*100+j))
-    mass=23
-    min_rad_per_sec=1
-    max_rad_per_sec=180
-    ixx="$(echo print 0.005+$i/20.0 | python2)"
-    iyy=2.9
-    izz="$(echo print 2.9-$j/10.0 | python2)"
+    #id=$((i*100+j))
+    id=$((100+j))
+    mass=34.4
+    min_rad_per_sec=60
+    max_rad_per_sec=210
+    ixx=0.392 #"$(echo print 0.005+$i/20.0 | python2)"
+    iyy=2.481
+    izz=2.104 #"$(echo print 2.9-$j/10.0 | python2)"
     min_force=1000
     max_force=50000
 
@@ -27,4 +28,4 @@ do
 
     sh single_test.sh $id $mass $min_rad_per_sec $max_rad_per_sec $ixx $iyy $izz $min_force $max_force &
   done
-done
+#done

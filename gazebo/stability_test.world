@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <world name="default">
     <plugin name="spinup" filename="libspinup_world.so">
-      <spinner_min_rad_per_sec>1</spinner_min_rad_per_sec>
+      <spinner_min_rad_per_sec>60</spinner_min_rad_per_sec>
       <spinner_max_rad_per_sec>75</spinner_max_rad_per_sec>
       <spinner_min_force_netwon>1000</spinner_min_force_netwon>
       <spinner_max_force_newton>1500</spinner_max_force_newton>
@@ -23,52 +23,17 @@
 
     <model name="robot">
       <include>
-        <uri>model://bloodsport_chassis</uri>
+        <uri>model://bloodsport_v2_chassis</uri>
       </include>
       <include>
         <!--<uri>model://bloodsport_standard_bar</uri>-->
         <!--<uri>model://bloodsport_asymetrical_bar</uri>-->
         <uri>model://bloodsport_standard_bar</uri>
       </include>
-      <link name="gyroscopic_spinner_link">
-        <pose>0 0.05 0.05 0 0 0</pose>
-        <inertial>
-          <mass>6.8</mass>
-          <inertia>
-            <ixx>0.05</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.4</iyy>
-            <iyz>0</iyz>
-            <izz>0.05</izz>
-          </inertia>
-        </inertial>
-        <visual name="gyroscopic_spinnner_visual">
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.025</length>
-            </cylinder>
-          </geometry>
-        </visual>
-        <collision name="gyroscopic_spinnner_collision">
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.025</length>
-            </cylinder>
-          </geometry>
-        </collision>
-      </link>
       <joint name="weapon_shaft_joint" type="revolute">
         <axis><xyz>0 1 0</xyz></axis>
         <parent>drive_base::drive_base_link</parent>
         <child>spinner::spinner_link</child>
-      </joint>
-      <joint name="gyroscopic_spinner_joint" type="revolute">
-        <axis><xyz>0 0 1</xyz></axis>
-        <parent>drive_base::drive_base_link</parent>
-        <child>gyroscopic_spinner_link</child>
       </joint>
     </model>
 

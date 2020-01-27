@@ -13,7 +13,7 @@ def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
     except:
         pass
 
-    tree = ET.parse('models/bloodsport_programmable_bar/model.sdf')
+    tree = ET.parse('models/bloodsport_v2_programmable_bar/model.sdf')
 
     inertial = tree.find('model').find('link').find('inertial')
 
@@ -27,7 +27,7 @@ def program_bar(barnum, mass, xx, yy, zz, xy=0, xz=0, yz=0):
 
     tree.write('autogen_model/bar'+str(barnum)+'/model.sdf')
 
-    copyfile('models/bloodsport_programmable_bar/model.config',
+    copyfile('models/bloodsport_v2_programmable_bar/model.config',
              'autogen_model/bar'+str(barnum)+'/model.config')
 
     tree = ET.parse('autogen_model/bar'+str(barnum)+'/model.config')
@@ -68,6 +68,7 @@ izz = sys.argv[7]
 min_force = sys.argv[8]
 max_force = sys.argv[9]
 
+print (" ** Programming bar & world **")
 
 program_bar(id, mass, ixx, iyy, izz)
 program_world(id, min_rad_per_sec, max_rad_per_sec, min_force, max_force)

@@ -1,0 +1,37 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+  <model name="spinner">
+    <link name="spinner_link">
+      <pose>0 0 0.107 1.5708 0 0</pose>
+      <inertial>
+        <mass>34.4</mass>
+        <inertia>
+          <ixx>0.392</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.481</iyy>
+          <iyz>0</iyz>
+          <izz>2.104</izz>
+        </inertia>
+      </inertial>
+      <collision name="spinner_collision">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BS-V2-Finbar.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="spinner_visual">
+        <geometry>
+          <mesh>
+            <uri>file://meshes/BS-V2-Finbar.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name='spinner_imu' type='imu'>
+      </sensor>
+    </link>
+  </model>
+</sdf>

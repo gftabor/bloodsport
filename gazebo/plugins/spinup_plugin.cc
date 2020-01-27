@@ -25,11 +25,9 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   this->robot_model = this->world->ModelByName("robot");
 
   this->weapon_joint = this->robot_model->GetJoint("weapon_shaft_joint");
-  this->gyroscopic_joint = this->robot_model->GetJoint("gyroscopic_spinner_joint");
 
   this->chassis_link = this->robot_model->GetChildLink("drive_base::drive_base_link");
   this->spinner_link = this->robot_model->GetChildLink("spinner::spinner_link");
-  this->gyroscopic_link = this->robot_model->GetChildLink("gyroscopic_spinner_link");
 
   physics::InertialPtr moi = this->spinner_link->GetInertial();
   std::cout << "Blade MOI is : xx:" << moi->IXX() << " yy:" << moi->IYY() << " zz:" << moi->IZZ() << std::endl;
@@ -80,7 +78,7 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
     std::cout << "Hitting weapon with max force: " << this->params.max_force_kn << " newtons" << std::endl;
   }
 
-  this->params.num_attempts_per_hit = 30;
+  this->params.num_attempts_per_hit = 15;
 
   this->params.increment_amount_kn = 125;
   this->params.increment_amount_rad_per_sec = 15;
@@ -90,6 +88,8 @@ void SpinupPlugin::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
 
   this->current_force = this->params.min_force_kn;
   this->current_spinner_rad_per_sec = this->params.min_rad_per_sec;
+
+  std::cout << "Finished basic parsing" << std::endl;
 
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
@@ -209,6 +209,6 @@ void SpinupPlugin::ResetWorld()
 
   this->world->Reset();
   this->weapon_joint->SetVelocity(0, this->current_spinner_rad_per_sec);
-  this->gyroscopic_joint->SetVelocity(0, 550);
+
   this->update_counter = 0;
 }
