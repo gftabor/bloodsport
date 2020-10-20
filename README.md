@@ -1,13 +1,6 @@
 bloodsport
-
-roslaunch bloodsport spin.launch 
-
-rostopic pub /BB/command std_msgs/Float64 "data: 100.0" 
+See starting results https://www.youtube.com/watch?v=70kyyTvBM-A&feature=youtu.be
 
 
-Remember units are Ros standard
-radians / second
 
-kg
 
-kg m^2
